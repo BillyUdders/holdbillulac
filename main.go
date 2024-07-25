@@ -17,6 +17,10 @@ var (
 	box  *rice.Box
 	rows []Row
 
+	indexCtx = map[string]string{
+		"Title":       "Big Test Page",
+		"Description": "Holden x Bill: Aligulac",
+	}
 	dummyRow = Row{
 		Name: "Jeffrey Epsteinmanhower",
 		Age:  52,
@@ -54,11 +58,7 @@ func deleteRow(w http.ResponseWriter, _ *http.Request) {
 func index(w http.ResponseWriter, _ *http.Request) {
 	content := box.MustString("index.html")
 	tmpl := template.Must(template.New("index").Parse(content))
-	data := map[string]string{
-		"Title":       "Big Test Page",
-		"Description": "Holden x Bill: Aligulac",
-	}
-	err := tmpl.Execute(w, data)
+	err := tmpl.Execute(w, indexCtx)
 	if err != nil {
 		log.Fatal(err)
 	}
