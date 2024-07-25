@@ -5,43 +5,50 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"slices"
 )
 
 var box *rice.Box
-var counter = 1
+var rows []Row
 
-func createRow(w http.ResponseWriter, _ *http.Request) {
-	counter++
-	log.Printf("Counter incremented to: %d", counter)
-	ret := `
+type Row struct {
+	Name string
+	Age  int
+}
+
+var (
+	dummyRow = Row{
+		Name: "Jeffrey Epsteinmanhower",
+		Age:  52,
+	}
+	rowTemplate = template.Must(template.New("row-partial").Parse(`
 		<tr>
-			<td>Rhys Davies</td>
-			<td>52223423</td>
+			<td>{{.Name}}</td>
+			<td>{{.Age}}</td>
 			<td><button hx-delete="/rows" hx-target="closest tr" hx-swap="outerHTML">Remove</button></td>
 		</tr>
-	`
-	_, _ = w.Write([]byte(ret))
+	`))
+)
 
+func createRow(w http.ResponseWriter, _ *http.Request) {
+	rows = append(rows, dummyRow)
+	err := rowTemplate.Execute(w, dummyRow)
+	if err != nil {
+		return
+	}
 }
 
 func deleteRow(w http.ResponseWriter, _ *http.Request) {
-	counter--
-	log.Printf("Counter decremented to: %d", counter)
+	rows = slices.Delete(rows, 0, 1)
 }
 
-func getAll(w http.ResponseWriter, _ *http.Request) {
-	var ret string
-	for i := 0; i < counter; i++ {
-		ret += `
-			<tr>
-				<td>Rhys Davies</td>
-				<td>52223423</td>
-				<td><button hx-delete="/rows" hx-target="closest tr" hx-swap="outerHTML">Remove</button></td>
-			</tr>
-		`
+func getRows(w http.ResponseWriter, _ *http.Request) {
+	for range rows {
+		err := rowTemplate.Execute(w, dummyRow)
+		if err != nil {
+			return
+		}
 	}
-	log.Printf("Returning: %s", ret)
-	_, _ = w.Write([]byte(ret))
 }
 
 func index(w http.ResponseWriter, _ *http.Request) {
@@ -58,14 +65,16 @@ func index(w http.ResponseWriter, _ *http.Request) {
 }
 
 func main() {
+	addr := "localhost:8080"
 	box = rice.MustFindBox("templates")
+
 	http.HandleFunc("GET /", index)
-	http.HandleFunc("GET /rows", getAll)
+	http.HandleFunc("GET /rows", getRows)
 	http.HandleFunc("POST /rows", createRow)
 	http.HandleFunc("DELETE /rows", deleteRow)
 
-	log.Printf("Listening on: %s", "localhost:8080")
-	err := http.ListenAndServe("localhost:8080", nil)
+	log.Printf("Listening on: %s", addr)
+	err := http.ListenAndServe(addr, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
