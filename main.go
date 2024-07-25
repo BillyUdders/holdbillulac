@@ -8,15 +8,15 @@ import (
 	"slices"
 )
 
-var box *rice.Box
-var rows []Row
-
 type Row struct {
 	Name string
 	Age  int
 }
 
 var (
+	box  *rice.Box
+	rows []Row
+
 	dummyRow = Row{
 		Name: "Jeffrey Epsteinmanhower",
 		Age:  52,
@@ -30,6 +30,15 @@ var (
 	`))
 )
 
+func getRows(w http.ResponseWriter, _ *http.Request) {
+	for range rows {
+		err := rowTemplate.Execute(w, dummyRow)
+		if err != nil {
+			return
+		}
+	}
+}
+
 func createRow(w http.ResponseWriter, _ *http.Request) {
 	rows = append(rows, dummyRow)
 	err := rowTemplate.Execute(w, dummyRow)
@@ -40,15 +49,6 @@ func createRow(w http.ResponseWriter, _ *http.Request) {
 
 func deleteRow(w http.ResponseWriter, _ *http.Request) {
 	rows = slices.Delete(rows, 0, 1)
-}
-
-func getRows(w http.ResponseWriter, _ *http.Request) {
-	for range rows {
-		err := rowTemplate.Execute(w, dummyRow)
-		if err != nil {
-			return
-		}
-	}
 }
 
 func index(w http.ResponseWriter, _ *http.Request) {
