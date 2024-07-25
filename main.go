@@ -56,7 +56,7 @@ func index(w http.ResponseWriter, _ *http.Request) {
 	tmpl := template.Must(template.New("index").Parse(content))
 	data := map[string]string{
 		"Title":       "Big Test Page",
-		"Description": "Rhys Testing out HTMX Golang",
+		"Description": "Holden x Bill: Aligulac",
 	}
 	err := tmpl.Execute(w, data)
 	if err != nil {
