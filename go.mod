@@ -1,4 +1,4 @@
-module awesomeProject
+module holdbillulac
 
 go 1.22
 
