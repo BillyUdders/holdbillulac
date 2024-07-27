@@ -2,6 +2,7 @@ package v1
 
 import (
 	"encoding/json"
+	"errors"
 	"holdbillulac/api/common"
 	"html/template"
 	"net/http"
@@ -32,7 +33,12 @@ type Player struct {
 }
 
 func GetPlayer(w http.ResponseWriter, r *http.Request) {
-	player, err := common.Query[Player](db, selectByID, r.PathValue("id"))
+	id := r.PathValue("id")
+	if id == "" {
+		common.HandleError(errLog, w, errors.New("must supply ID"), http.StatusBadRequest)
+		return
+	}
+	player, err := common.Query[Player](db, selectByID, id)
 	if err != nil {
 		common.HandleError(errLog, w, err, http.StatusInternalServerError)
 		return
