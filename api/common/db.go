@@ -1,18 +1,16 @@
-package main
+package common
 
 import (
-	"log"
-
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
+	"log"
 )
 
-func InitDB(dbName string) *sqlx.DB {
-	val, err := sqlx.Connect("sqlite3", dbName)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	return val
+func InitDB(dbName string, createTableStmt string, logger *log.Logger) *sqlx.DB {
+	db := sqlx.MustConnect("sqlite3", dbName)
+	result := db.MustExec(createTableStmt)
+	logger.Printf("Database initialized and migrated with result %v", result)
+	return db
 }
 
 func Insert(db *sqlx.DB, query string, insertable any) (int64, error) {

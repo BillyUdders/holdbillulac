@@ -1,7 +1,8 @@
-package main
+package v1
 
 import (
 	"encoding/json"
+	"holdbillulac/api/common"
 	"html/template"
 	"net/http"
 )
@@ -32,69 +33,69 @@ var (
 )
 
 type Player struct {
-	Base
+	common.Base
 	Name string `db:"name"`
 	Age  string `db:"age"`
 	MMR  string `db:"MMR"`
 }
 
-func getPlayer(w http.ResponseWriter, r *http.Request) {
-	player, err := Query[Player](db, selectByID, r.PathValue("id"))
+func GetPlayer(w http.ResponseWriter, r *http.Request) {
+	player, err := common.Query[Player](db, selectByID, r.PathValue("id"))
 	if err != nil {
-		handleError(w, err, http.StatusInternalServerError)
+		common.HandleError(errLog, w, err, http.StatusInternalServerError)
 		return
 	}
 	err = trTemplate.Execute(w, player)
 	if err != nil {
-		handleError(w, err, http.StatusInternalServerError)
+		common.HandleError(errLog, w, err, http.StatusInternalServerError)
 		return
 	}
 	infoLog.Printf("Get all: %v", player)
 }
 
-func getPlayers(w http.ResponseWriter, _ *http.Request) {
-	players, err := Query[[]Player](db, selectAll)
+func GetPlayers(w http.ResponseWriter, _ *http.Request) {
+	players, err := common.Query[[]Player](db, selectAll)
 	if err != nil {
-		handleError(w, err, http.StatusInternalServerError)
+		common.HandleError(errLog, w, err, http.StatusInternalServerError)
 		return
 	}
 	for i := range players {
 		player := players[i]
 		err = trTemplate.Execute(w, player)
 		if err != nil {
-			handleError(w, err, http.StatusInternalServerError)
+			common.HandleError(errLog, w, err, http.StatusInternalServerError)
 			return
 		}
 	}
 	infoLog.Printf("Players returned: %v", len(players))
 }
 
-func createPlayer(w http.ResponseWriter, r *http.Request) {
+func CreatePlayer(w http.ResponseWriter, r *http.Request) {
 	var player Player
 	err := json.NewDecoder(r.Body).Decode(&player)
 	if err != nil {
-		handleError(w, err, http.StatusBadRequest)
+		common.HandleError(errLog, w, err, http.StatusBadRequest)
 		return
 	}
-	insertId, err := Insert(db, insert, player)
+	insertId, err := common.Insert(db, insert, player)
 	if err != nil {
-		handleError(w, err, http.StatusInternalServerError)
+		common.HandleError(errLog, w, err, http.StatusInternalServerError)
 		return
 	}
 	player.ID = insertId
 	err = trTemplate.Execute(w, player)
 	if err != nil {
-		handleError(w, err, http.StatusInternalServerError)
+		common.HandleError(errLog, w, err, http.StatusInternalServerError)
 		return
 	}
 	infoLog.Printf("Created: %v", player)
 }
 
-func deletePlayer(w http.ResponseWriter, r *http.Request) {
+func DeletePlayer(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 	_, err := db.Exec(deleteByID, id)
 	if err != nil {
-		handleError(w, err, http.StatusInternalServerError)
+		common.HandleError(errLog, w, err, http.StatusInternalServerError)
 		return
 	}
 	infoLog.Printf("Deleted ID: %v", id)
