@@ -14,12 +14,6 @@ func main() {
 
 	api.Initialize("holdbillulac.db", infoLog, errLog)
 
-	http.HandleFunc("GET /", api.Index)
-	http.HandleFunc("GET /rows", api.GetPlayers)
-	http.HandleFunc("POST /rows", api.CreatePlayer)
-	http.HandleFunc("GET /rows/{id}", api.GetPlayer)
-	http.HandleFunc("DELETE /rows/{id}", api.DeletePlayer)
-
 	infoLog.Printf("Listening on: %s", addr)
 	err := http.ListenAndServe(addr, nil)
 	if err != nil {

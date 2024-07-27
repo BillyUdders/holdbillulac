@@ -5,6 +5,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"holdbillulac/api/common"
 	"log"
+	"net/http"
 )
 
 var (
@@ -19,4 +20,10 @@ func Initialize(dbName string, _infoLog *log.Logger, _errLog *log.Logger) {
 	box = rice.MustFindBox("../templates")
 	infoLog = _infoLog
 	errLog = _errLog
+
+	http.HandleFunc("GET /", Index)
+	http.HandleFunc("GET /rows", GetPlayers)
+	http.HandleFunc("POST /rows", CreatePlayer)
+	http.HandleFunc("GET /rows/{id}", GetPlayer)
+	http.HandleFunc("DELETE /rows/{id}", DeletePlayer)
 }

@@ -9,13 +9,30 @@
             crossorigin="anonymous"></script>
     <script src="https://unpkg.com/htmx-ext-json-enc@2.0.0/json-enc.js"></script>
     <style>
-        body {
-            font: normal 14px Verdana, Arial, sans-serif;
+        html, body {
+            background: #f2f4f8;
+            display: flex;
+            flex-direction: column;
+            border: 0;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            height: 100%;
+            margin: 0;
+            padding: 0;
         }
 
         h1 {
             text-align: center;
             text-decoration: underline;
+        }
+
+        form {
+            background-color: #8ab5b5;
+            display: flex;
+            flex-direction: row;
+            padding: 1rem;
+            position: relative;
+            overflow: hidden;
         }
 
         table {
@@ -43,14 +60,14 @@
 <h1>{{.Description}}</h1>
 
 <div>
-    <form id="myForm" hx-post="/rows" hx-trigger="click[#myForm .submit]" hx-target="#table-body" hx-swap="beforeend" hx-ext="json-enc">
+    <form id="myForm">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required><br><br>
         <label for="age">Age:</label>
         <input type="number" id="age" name="age" required><br><br>
         <label for="mmr">MMR:</label>
         <input type="number" id="mmr" name="mmr" required><br><br>
-        <button type="submit" id="submit">Submit</button>
+        <button type="submit" id="submit" hx-post="/rows" hx-trigger="click" hx-target="#table-body" hx-swap="beforeend" hx-ext="json-enc">Submit</button>
     </form>
     <table>
         <thead>
