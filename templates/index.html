@@ -23,6 +23,11 @@
             border-collapse: collapse;
         }
 
+        tr.htmx-swapping td {
+            opacity: 0;
+            transition: opacity 1s ease-out;
+        }
+
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
@@ -48,6 +53,7 @@
     <table>
         <thead>
         <tr>
+            <th>ID</th>
             <th>Name</th>
             <th>Age</th>
             <th>Actions</th>
