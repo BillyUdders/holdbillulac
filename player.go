@@ -9,13 +9,14 @@ import (
 
 var (
 	createTableStmt = `
-		CREATE TABLE IF NOT EXISTS rows (
+		CREATE TABLE IF NOT EXISTS players (
 			id  	integer primary key,
 			name 	text,
 			age 	integer,
 		    MMR 	integer
 		)
 	`
+	insertStmt = "INSERT INTO players (name, age, MMR) VALUES (:name, :age, :MMR)"
 	asListItem = func(id int64) *template.Template {
 		return template.Must(template.New(fmt.Sprintf("%v-row", id)).Parse(`
 		<tr>
@@ -41,7 +42,7 @@ func (row Player) Render(w http.ResponseWriter) error {
 }
 
 func getPlayer(w http.ResponseWriter, r *http.Request) {
-	row, err := Query[Player](db, "SELECT * FROM rows WHERE id = ?", r.PathValue("id"))
+	row, err := Query[Player](db, "SELECT * FROM players WHERE id = ?", r.PathValue("id"))
 	if err != nil {
 		handleError(w, err, http.StatusInternalServerError)
 		return
@@ -54,13 +55,13 @@ func getPlayer(w http.ResponseWriter, r *http.Request) {
 }
 
 func getPlayers(w http.ResponseWriter, _ *http.Request) {
-	rows, err := Query[[]Player](db, "SELECT * FROM rows")
+	players, err := Query[[]Player](db, "SELECT * FROM players")
 	if err != nil {
 		handleError(w, err, http.StatusInternalServerError)
 		return
 	}
-	for i := range rows {
-		err = rows[i].Render(w)
+	for i := range players {
+		err = players[i].Render(w)
 		if err != nil {
 			handleError(w, err, http.StatusInternalServerError)
 			return
@@ -69,19 +70,19 @@ func getPlayers(w http.ResponseWriter, _ *http.Request) {
 }
 
 func createPlayer(w http.ResponseWriter, r *http.Request) {
-	var row Player
-	err := json.NewDecoder(r.Body).Decode(&row)
+	var player Player
+	err := json.NewDecoder(r.Body).Decode(&player)
 	if err != nil {
 		handleError(w, err, http.StatusBadRequest)
 		return
 	}
-	insertId, err := Insert(db, "INSERT INTO rows (name, age, MMR) VALUES (:name, :age, :MMR)", row)
+	insertId, err := Insert(db, insertStmt, player)
 	if err != nil {
 		handleError(w, err, http.StatusInternalServerError)
 		return
 	}
-	row.ID = insertId
-	err = row.Render(w)
+	player.ID = insertId
+	err = player.Render(w)
 	if err != nil {
 		handleError(w, err, http.StatusInternalServerError)
 		return
