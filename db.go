@@ -7,7 +7,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func initDB(dbName string) *sqlx.DB {
+func InitDB(dbName string) *sqlx.DB {
 	val, err := sqlx.Connect("sqlite3", dbName)
 	if err != nil {
 		log.Fatalln(err)
@@ -15,21 +15,24 @@ func initDB(dbName string) *sqlx.DB {
 	return val
 }
 
-func insert(db *sqlx.DB, query string, params ...interface{}) (int64, error) {
-	exec, err := db.Exec(query, params...)
+func Insert(db *sqlx.DB, query string, insertable any) (int64, error) {
+	stmt, err := db.PrepareNamed(query)
 	if err != nil {
 		return 0, err
 	}
-	id, err := exec.LastInsertId()
+	id, err := stmt.Exec(insertable)
 	if err != nil {
 		return 0, err
 	}
-	return id, err
+	insertId, err := id.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
+	return insertId, err
 }
 
-func Query[T any](db *sqlx.DB, query string) (T, error) {
+func Query[T any](db *sqlx.DB, query string, params ...interface{}) (T, error) {
 	var all T
-	db.
-	err := db.Select(&all, query)
+	err := db.Select(&all, query, params...)
 	return all, err
 }
