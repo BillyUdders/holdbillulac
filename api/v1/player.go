@@ -8,14 +8,6 @@ import (
 )
 
 var (
-	createTableStmt = `
-		CREATE TABLE IF NOT EXISTS players (
-			id  	integer primary key,
-			name 	text,
-			age 	integer,
-		    MMR 	integer
-		)
-	`
 	insert     = "INSERT INTO players (name, age, MMR) VALUES (:name, :age, :MMR)"
 	selectAll  = "SELECT * FROM players"
 	selectByID = "SELECT * FROM players WHERE id = ?"

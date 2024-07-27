@@ -6,10 +6,9 @@ import (
 	"log"
 )
 
-func InitDB(dbName string, createTableStmt string, logger *log.Logger) *sqlx.DB {
+func InitDB(dbName string, logger *log.Logger) *sqlx.DB {
 	db := sqlx.MustConnect("sqlite3", dbName)
-	_ = db.MustExec(createTableStmt)
-	logger.Println("SQLLite3 Database: initialized")
+	logger.Printf("Initialized: %s", dbName)
 	return db
 }
 

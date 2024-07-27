@@ -3,7 +3,6 @@ package v1
 import (
 	rice "github.com/GeertJohan/go.rice"
 	"github.com/jmoiron/sqlx"
-	"holdbillulac/api/common"
 	"log"
 	"net/http"
 )
@@ -15,8 +14,8 @@ var (
 	errLog  *log.Logger
 )
 
-func Initialize(dbName string, _infoLog *log.Logger, _errLog *log.Logger) {
-	db = common.InitDB(dbName, createTableStmt, _infoLog)
+func Initialize(_db *sqlx.DB, _infoLog *log.Logger, _errLog *log.Logger) {
+	db = _db
 	box = rice.MustFindBox("../templates")
 	infoLog = _infoLog
 	errLog = _errLog
