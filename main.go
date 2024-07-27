@@ -68,7 +68,8 @@ func getRows(w http.ResponseWriter, _ *http.Request) {
 }
 
 func createRow(w http.ResponseWriter, r *http.Request) {
-	row, err := parseBody[Row](r)
+	var row Row
+	err := json.NewDecoder(r.Body).Decode(&row)
 	if err != nil {
 		handleError(w, err, http.StatusBadRequest)
 		return
@@ -92,12 +93,6 @@ func deleteRow(w http.ResponseWriter, r *http.Request) {
 		handleError(w, err, http.StatusInternalServerError)
 		return
 	}
-}
-
-func parseBody[T any](r *http.Request) (T, error) {
-	var t T
-	err := json.NewDecoder(r.Body).Decode(&t)
-	return t, err
 }
 
 func handleError(w http.ResponseWriter, err error, errCode int) {
