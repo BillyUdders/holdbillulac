@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"html/template"
 	"net/http"
 )
@@ -16,9 +15,12 @@ var (
 		    MMR 	integer
 		)
 	`
-	insertStmt = "INSERT INTO players (name, age, MMR) VALUES (:name, :age, :MMR)"
-	asListItem = func(id int64) *template.Template {
-		return template.Must(template.New(fmt.Sprintf("%v-row", id)).Parse(`
+	insert     = "INSERT INTO players (name, age, MMR) VALUES (:name, :age, :MMR)"
+	selectAll  = "SELECT * FROM players"
+	selectByID = "SELECT * FROM players WHERE id = ?"
+	deleteByID = "DELETE FROM players WHERE id = ?"
+
+	trTemplate = template.Must(template.New("player-table-row").Parse(`
 		<tr>
 			<td id="id">{{.ID}}</td>
 			<td id="name">{{.Name}}</td>
@@ -27,7 +29,6 @@ var (
 			<td id="delete-button"><button hx-delete="/rows/{{.ID}}" hx-target="closest tr" hx-swap="outerHTML">Remove</button></td>
 		</tr>
 	`))
-	}
 )
 
 type Player struct {
@@ -37,36 +38,35 @@ type Player struct {
 	MMR  string `db:"MMR"`
 }
 
-func (row Player) Render(w http.ResponseWriter) error {
-	return asListItem(row.ID).Execute(w, row)
-}
-
 func getPlayer(w http.ResponseWriter, r *http.Request) {
-	row, err := Query[Player](db, "SELECT * FROM players WHERE id = ?", r.PathValue("id"))
+	player, err := Query[Player](db, selectByID, r.PathValue("id"))
 	if err != nil {
 		handleError(w, err, http.StatusInternalServerError)
 		return
 	}
-	err = row.Render(w)
+	err = trTemplate.Execute(w, player)
 	if err != nil {
 		handleError(w, err, http.StatusInternalServerError)
 		return
 	}
+	infoLog.Printf("Get all: %v", player)
 }
 
 func getPlayers(w http.ResponseWriter, _ *http.Request) {
-	players, err := Query[[]Player](db, "SELECT * FROM players")
+	players, err := Query[[]Player](db, selectAll)
 	if err != nil {
 		handleError(w, err, http.StatusInternalServerError)
 		return
 	}
 	for i := range players {
-		err = players[i].Render(w)
+		player := players[i]
+		err = trTemplate.Execute(w, player)
 		if err != nil {
 			handleError(w, err, http.StatusInternalServerError)
 			return
 		}
 	}
+	infoLog.Printf("Players returned: %v", len(players))
 }
 
 func createPlayer(w http.ResponseWriter, r *http.Request) {
@@ -76,23 +76,26 @@ func createPlayer(w http.ResponseWriter, r *http.Request) {
 		handleError(w, err, http.StatusBadRequest)
 		return
 	}
-	insertId, err := Insert(db, insertStmt, player)
+	insertId, err := Insert(db, insert, player)
 	if err != nil {
 		handleError(w, err, http.StatusInternalServerError)
 		return
 	}
 	player.ID = insertId
-	err = player.Render(w)
+	err = trTemplate.Execute(w, player)
 	if err != nil {
 		handleError(w, err, http.StatusInternalServerError)
 		return
 	}
+	infoLog.Printf("Created: %v", player)
 }
 
 func deletePlayer(w http.ResponseWriter, r *http.Request) {
-	_, err := db.Exec("DELETE FROM rows WHERE id = ?", r.PathValue("id"))
+	id := r.PathValue("id")
+	_, err := db.Exec(deleteByID, id)
 	if err != nil {
 		handleError(w, err, http.StatusInternalServerError)
 		return
 	}
+	infoLog.Printf("Deleted ID: %v", id)
 }

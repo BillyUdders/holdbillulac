@@ -11,7 +11,7 @@ var (
 	box     *rice.Box
 	db      *sqlx.DB
 	errLog  = log.New(log.Writer(), "ERROR: ", log.Ldate|log.Ltime|log.Lshortfile)
-	infoLog = log.New(log.Writer(), "ERROR: ", log.Ldate|log.Ltime|log.Lshortfile)
+	infoLog = log.New(log.Writer(), "INFO: ", log.Ldate|log.Ltime|log.Lshortfile)
 
 	indexCtx = map[string]string{
 		"Title":       "Big Test Page",
@@ -35,7 +35,7 @@ func main() {
 	http.HandleFunc("GET /rows/{id}", getPlayer)
 	http.HandleFunc("DELETE /rows/{id}", deletePlayer)
 
-	log.Printf("Listening on: %s", addr)
+	infoLog.Printf("Listening on: %s", addr)
 	err = http.ListenAndServe(addr, nil)
 	if err != nil {
 		errLog.Fatal(err)
