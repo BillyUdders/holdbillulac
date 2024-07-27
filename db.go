@@ -27,8 +27,9 @@ func insert(db *sqlx.DB, query string, params ...interface{}) (int64, error) {
 	return id, err
 }
 
-func getAll[T any](db *sqlx.DB, query string) ([]T, error) {
-	var all []T
+func Query[T any](db *sqlx.DB, query string) (T, error) {
+	var all T
+	db.
 	err := db.Select(&all, query)
 	return all, err
 }

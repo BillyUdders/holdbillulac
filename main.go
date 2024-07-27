@@ -49,19 +49,22 @@ func Render(w http.ResponseWriter, row Row) error {
 func getRow(w http.ResponseWriter, _ *http.Request) {
 	err := Render(w, Row{})
 	if err != nil {
+		handleError(w, err, http.StatusInternalServerError)
 		return
 	}
 }
 
 func getRows(w http.ResponseWriter, _ *http.Request) {
-	rows, err := getAll[Row](db, "SELECT * FROM rows")
+	rows, err := Query[[]Row](db, "SELECT * FROM rows")
 	if err != nil {
 		handleError(w, err, http.StatusInternalServerError)
+		return
 	}
 	for i := range rows {
 		row := rows[i]
 		err = Render(w, row)
 		if err != nil {
+			handleError(w, err, http.StatusInternalServerError)
 			return
 		}
 	}
@@ -95,18 +98,19 @@ func deleteRow(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func handleError(w http.ResponseWriter, err error, errCode int) {
-	errLog.Println(err.Error())
-	http.Error(w, err.Error(), errCode)
-}
-
 func index(w http.ResponseWriter, _ *http.Request) {
 	content := box.MustString("index.html")
 	tmpl := template.Must(template.New("index").Parse(content))
 	err := tmpl.Execute(w, indexCtx)
 	if err != nil {
-		log.Fatal(err)
+		handleError(w, err, http.StatusInternalServerError)
+		return
 	}
+}
+
+func handleError(w http.ResponseWriter, err error, errCode int) {
+	errLog.Println(err.Error())
+	http.Error(w, err.Error(), errCode)
 }
 
 func main() {
