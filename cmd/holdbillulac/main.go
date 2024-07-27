@@ -13,7 +13,8 @@ import (
 //go:embed migrations/*.sql
 var embedMigrations embed.FS
 
-func runGooseMigration(db *sqlx.DB) {
+func runGooseMigration(db *sqlx.DB, logger goose.Logger) {
+	goose.SetLogger(logger)
 	goose.SetBaseFS(embedMigrations)
 	if err := goose.SetDialect("sqlite3"); err != nil {
 		panic(err)
@@ -25,12 +26,11 @@ func runGooseMigration(db *sqlx.DB) {
 
 func main() {
 	addr := "localhost:8080"
-
 	infoLog := log.New(log.Writer(), "INFO: ", log.Ldate|log.Ltime|log.Lshortfile)
 	errLog := log.New(log.Writer(), "ERROR: ", log.Ldate|log.Ltime|log.Lshortfile)
 
 	db := common.InitDB("holdbillulac.db", infoLog)
-	runGooseMigration(db)
+	runGooseMigration(db, infoLog)
 	api.Initialize(db, infoLog, errLog)
 
 	infoLog.Printf("Listening on: %s", addr)
