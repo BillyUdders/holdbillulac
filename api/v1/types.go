@@ -10,7 +10,7 @@ import (
 type Player struct {
 	common.Base
 	Name string `db:"name"`
-	Age  string `db:"age"`
+	Age  int    `db:"age"`
 	MMR  string `db:"MMR"`
 }
 
@@ -19,7 +19,7 @@ func (player *Player) fromBody(body io.ReadCloser) (*Player, error) {
 	if err != nil {
 		return nil, err
 	}
-	if player.Name == "" || player.Age == "" {
+	if player.Name == "" || player.Age == 0 {
 		return nil, errors.New("missing required fields")
 	}
 	return player, nil
