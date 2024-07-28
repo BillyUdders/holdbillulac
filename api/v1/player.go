@@ -1,7 +1,6 @@
 package v1
 
 import (
-	"encoding/json"
 	"errors"
 	"holdbillulac/api/common"
 	"html/template"
@@ -25,14 +24,7 @@ var (
 	`))
 )
 
-type Player struct {
-	common.Base
-	Name string `db:"name"`
-	Age  string `db:"age"`
-	MMR  string `db:"MMR"`
-}
-
-func GetPlayer(w http.ResponseWriter, r *http.Request) {
+func getPlayer(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 	if id == "" {
 		common.HandleError(errLog, w, errors.New("must supply ID"), http.StatusBadRequest)
@@ -51,7 +43,7 @@ func GetPlayer(w http.ResponseWriter, r *http.Request) {
 	infoLog.Printf("Get all: %v", player)
 }
 
-func GetPlayers(w http.ResponseWriter, _ *http.Request) {
+func getPlayers(w http.ResponseWriter, _ *http.Request) {
 	players, err := common.Query[[]Player](db, selectAll)
 	if err != nil {
 		common.HandleError(errLog, w, err, http.StatusInternalServerError)
@@ -68,9 +60,8 @@ func GetPlayers(w http.ResponseWriter, _ *http.Request) {
 	infoLog.Printf("Players returned: %v", len(players))
 }
 
-func CreatePlayer(w http.ResponseWriter, r *http.Request) {
-	var player Player
-	err := json.NewDecoder(r.Body).Decode(&player)
+func createPlayer(w http.ResponseWriter, r *http.Request) {
+	player, err := new(Player).fromBody(r.Body)
 	if err != nil {
 		common.HandleError(errLog, w, err, http.StatusBadRequest)
 		return
@@ -89,7 +80,7 @@ func CreatePlayer(w http.ResponseWriter, r *http.Request) {
 	infoLog.Printf("Created: %v", player)
 }
 
-func DeletePlayer(w http.ResponseWriter, r *http.Request) {
+func deletePlayer(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 	_, err := db.Exec(deleteByID, id)
 	if err != nil {

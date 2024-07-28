@@ -20,9 +20,9 @@ func Initialize(_db *sqlx.DB, _infoLog *log.Logger, _errLog *log.Logger) {
 	infoLog = _infoLog
 	errLog = _errLog
 
-	http.HandleFunc("GET /", Index)
-	http.HandleFunc("GET /rows", GetPlayers)
-	http.HandleFunc("POST /rows", CreatePlayer)
-	http.HandleFunc("GET /rows/{id}", GetPlayer)
-	http.HandleFunc("DELETE /rows/{id}", DeletePlayer)
+	http.HandleFunc("GET /", index)
+	http.HandleFunc("GET /rows", getPlayers)
+	http.HandleFunc("POST /rows", createPlayer)
+	http.HandleFunc("GET /rows/{id}", getPlayer)
+	http.HandleFunc("DELETE /rows/{id}", deletePlayer)
 }

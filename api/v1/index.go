@@ -11,7 +11,7 @@ var indexCtx = map[string]string{
 	"Description": "Holdbillulac",
 }
 
-func Index(w http.ResponseWriter, _ *http.Request) {
+func index(w http.ResponseWriter, _ *http.Request) {
 	content := box.MustString("index.html")
 	tmpl := template.Must(template.New("index").Parse(content))
 	err := tmpl.Execute(w, indexCtx)
