@@ -41,6 +41,5 @@ func (player *Player) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	player.MMR = mmr
-
 	return nil
 }
