@@ -19,7 +19,7 @@ var (
 			<td id="name">{{.Name}}</td>
 			<td id="age">{{.Age}}</td>
 			<td id="MMR">{{.MMR}}</td>
-			<td id="delete-button"><button hx-delete="/rows/{{.ID}}" hx-target="closest tr" hx-swap="outerHTML">Remove</button></td>
+			<td id="delete-button"><button hx-delete="/player/{{.ID}}" hx-target="closest tr" hx-swap="outerHTML">Remove</button></td>
 		</tr>
 	`))
 )

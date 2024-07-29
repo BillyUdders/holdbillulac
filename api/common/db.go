@@ -6,6 +6,10 @@ import (
 	"log"
 )
 
+type Base struct {
+	ID int64 `db:"id"`
+}
+
 func InitDB(dbName string, logger *log.Logger) *sqlx.DB {
 	db := sqlx.MustConnect("sqlite3", dbName)
 	logger.Printf("Initialized: %s", dbName)

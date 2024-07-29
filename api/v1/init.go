@@ -21,8 +21,8 @@ func Initialize(_db *sqlx.DB, _infoLog *log.Logger, _errLog *log.Logger) {
 	errLog = _errLog
 
 	http.HandleFunc("GET /", index)
-	http.HandleFunc("GET /rows", getPlayers)
-	http.HandleFunc("POST /rows", createPlayer)
-	http.HandleFunc("GET /rows/{id}", getPlayer)
-	http.HandleFunc("DELETE /rows/{id}", deletePlayer)
+	http.HandleFunc("GET /player", getPlayers)
+	http.HandleFunc("POST /player", createPlayer)
+	http.HandleFunc("GET /player/{id}", getPlayer)
+	http.HandleFunc("DELETE /player/{id}", deletePlayer)
 }

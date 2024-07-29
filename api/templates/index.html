@@ -73,7 +73,7 @@
 
 <div>
     <form id="myForm"
-          hx-post="/rows"
+          hx-post="/player"
           hx-trigger="submit"
           hx-target="#table-body"
           hx-swap="beforeend"
@@ -91,12 +91,12 @@
         <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Age</th>
-            <th>MMR</th>
+            <th class="sorttable_numeric">Age</th>
+            <th class="sorttable_numeric">MMR</th>
             <th>Actions</th>
         </tr>
         </thead>
-        <tbody id="table-body" hx-get="/rows" hx-trigger="load">
+        <tbody id="table-body" hx-get="/player" hx-trigger="load">
         </tbody>
     </table>
 </div>
