@@ -23,10 +23,15 @@
         });
     </script>
     <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Marcellus+SC">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 </head>
 
 <body>
-<h1>{{.Description}}</h1>
+<div class="heading-container">
+    <h1>{{.Description}}</h1>
+    <h2>{{.Tagline}}</h2>
+</div>
 <div>
     <form id="myForm"
           hx-post="/player"
