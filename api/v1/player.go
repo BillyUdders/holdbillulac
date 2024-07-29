@@ -2,6 +2,7 @@ package v1
 
 import (
 	"errors"
+	"github.com/gorilla/mux"
 	"holdbillulac/api/common"
 	"html/template"
 	"net/http"
@@ -25,7 +26,7 @@ var (
 )
 
 func getPlayer(w http.ResponseWriter, r *http.Request) {
-	id := r.PathValue("id")
+	id := mux.Vars(r)["id"]
 	if id == "" {
 		common.HandleError(errLog, w, errors.New("must supply ID"), http.StatusBadRequest)
 		return
@@ -81,7 +82,7 @@ func createPlayer(w http.ResponseWriter, r *http.Request) {
 }
 
 func deletePlayer(w http.ResponseWriter, r *http.Request) {
-	id := r.PathValue("id")
+	id := mux.Vars(r)["id"]
 	_, err := db.Exec(deleteByID, id)
 	if err != nil {
 		common.HandleError(errLog, w, err, http.StatusInternalServerError)

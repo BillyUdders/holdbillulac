@@ -8,7 +8,7 @@ import (
 
 var indexCtx = map[string]string{
 	"Title":       "StarCraft 2 Cringers Unite",
-	"Description": "Holdbillulac",
+	"Description": "STARCRAFT 2 STATS",
 }
 
 func index(w http.ResponseWriter, _ *http.Request) {

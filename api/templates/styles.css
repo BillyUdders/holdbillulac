@@ -1,0 +1,123 @@
+html, body {
+    background: #2e343f;
+    display: flex;
+    flex-direction: column;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    height: 100%;
+}
+
+h1 {
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: linear-gradient(to right, #8ab5b5, #b48ead);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    display: inline-block;
+}
+
+h1::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -10px;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 4px;
+    background: linear-gradient(to right, #8ab5b5 0%, #b3d4d4 100%);
+    border-radius: 2px;
+}
+
+form {
+    position: relative;
+    left: 10%;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: normal;
+    background-color: #8ab5b5;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    padding: 7px 0 7px 1px;
+    box-sizing: border-box;
+}
+
+.styled-table {
+    border-spacing: 0;
+    overflow: hidden; /* Ensures content stays within rounded corners */
+    position: relative;
+    left: 10%;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: normal;
+    border-collapse: collapse;
+    width: 80%;
+    max-width: 100%;
+    white-space: nowrap;
+    background-color: white;
+    margin: 25px 0;
+    font-family: sans-serif;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+    background-color: #8ab5b5;
+    color: #ffffff;
+    text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #8ab5b5;
+}
+
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #8ab5b5;
+}
+
+label {
+    padding-left: 5px;
+    padding-right: 5px;
+    font-weight: bold;
+}
+
+input {
+    width: 25%;
+    box-sizing: border-box;
+}
+
+button[type="submit"] {
+    padding: 10px 20px 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #a3be8c;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-left: 5px;
+}
+
+button[type="submit"]:hover {
+    background-color: #bf616a;
+}

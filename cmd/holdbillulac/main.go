@@ -31,10 +31,11 @@ func main() {
 
 	db := common.InitDB("holdbillulac.db", infoLog)
 	runGooseMigration(db, infoLog)
-	api.Initialize(db, infoLog, errLog)
+
+	router := api.Initialize(db, infoLog, errLog)
 
 	infoLog.Printf("Listening on: %s", addr)
-	err := http.ListenAndServe(addr, nil)
+	err := http.ListenAndServe(addr, router)
 	if err != nil {
 		errLog.Fatal(err)
 	}

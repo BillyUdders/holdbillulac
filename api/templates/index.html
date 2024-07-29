@@ -13,64 +13,20 @@
         document.addEventListener("DOMContentLoaded", function () {
             const form = document.getElementById("myForm");
             const submitButton = document.getElementById("submit");
+
             function checkFormValidity() {
                 submitButton.disabled = !form.checkValidity();
             }
+
             form.addEventListener("input", checkFormValidity);
             checkFormValidity();
         });
     </script>
-    <style>
-        html, body {
-            background: #f2f4f8;
-            display: flex;
-            flex-direction: column;
-            border: 0;
-            font-family: Helvetica, Arial, sans-serif;
-            font-size: 16px;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-        h1 {
-            text-align: center;
-            text-decoration: underline;
-        }
-
-        form {
-            background-color: #8ab5b5;
-            display: flex;
-            flex-direction: row;
-            padding: 1rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        tr.htmx-swapping td {
-            opacity: 0;
-            transition: opacity 1s ease-out;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-
-        th {
-            background-color: #8ab5b5;
-            text-align: left;
-        }
-    </style>
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
+
 <body>
 <h1>{{.Description}}</h1>
-
 <div>
     <form id="myForm"
           hx-post="/player"
@@ -86,10 +42,10 @@
         <input type="number" id="mmr" name="mmr" inputmode="numeric" required><br><br>
         <button type="submit" id="submit">Submit</button>
     </form>
-    <table class="sortable">
+    <table class="sortable styled-table">
         <thead>
         <tr>
-            <th>ID</th>
+            <th class="sorttable_numeric">ID</th>
             <th>Name</th>
             <th class="sorttable_numeric">Age</th>
             <th class="sorttable_numeric">MMR</th>
