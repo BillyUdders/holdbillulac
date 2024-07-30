@@ -8,7 +8,7 @@
             integrity="sha384-QWGpdj554B4ETpJJC9z+ZHJcA/i59TyjxEPXiiUgN2WmTyV5OEZWCD6gQhgkdpB/"
             crossorigin="anonymous"></script>
     <script src="https://unpkg.com/htmx-ext-json-enc@2.0.0/json-enc.js"></script>
-    <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.1/css/bulma.min.css">
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const form = document.getElementById("myForm");
@@ -28,73 +28,113 @@
 </head>
 
 <body>
-<div class="heading">
-    <h1>{{.Description}}</h1>
-    <h2>{{.Tagline}}</h2>
-</div>
 <div>
-    <div class="link-bar">
-        <div class="dropdown">
-            <span>Rankings</span>
-            <div class="dropdown-content">
-                <a href="http://localhost:8080/rankings">Rankings</a>
-            </div>
-        </div>
-        <div class="dropdown">
-            <span>Teams</span>
-            <div class="dropdown-content">
-                <a href="http://localhost:8080/teams">Teams</a>
-            </div>
-        </div>
-        <div class="dropdown">
-            <span>Records</span>
-            <div class="dropdown-content">
-                <a href="http://localhost:8080/records">Records</a>
-            </div>
-        </div>
-        <div class="dropdown">
-            <span>Results</span>
-            <div class="dropdown-content">
-                <a href="http://localhost:8080/results">Results</a>
-            </div>
+    <h1 class="title has-text-centered">{{.Description}}</h1>
+    <h2 class="subtitle has-text-centered">{{.Tagline}}</h2>
+</div>
+<nav class="navbar grid" role="navigation" aria-label="main navigation">
+    <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+            Rankings
+        </a>
+        <div class="navbar-dropdown">
+            <a class="navbar-item is-selected">
+                Jobs
+            </a>
+            <a class="navbar-item">
+                Contact
+            </a>
         </div>
     </div>
-    <form id="player-input-form"
-          class="player-input-form"
-          hx-post="/player"
-          hx-trigger="submit"
-          hx-target="#table-body"
-          hx-swap="beforeend"
-          hx-ext="json-enc">
-        <div class="input-group">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required><br><br>
+    <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+            Teams
+        </a>
+        <div class="navbar-dropdown">
+            <a class="navbar-item is-selected">
+                Jobs
+            </a>
+            <a class="navbar-item">
+                Contact
+            </a>
         </div>
-        <div class="input-group">
-            <label for="age">Age:</label>
-            <input type="number" id="age" name="age" inputmode="numeric" required><br><br>
+    </div>
+    <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+            Rankings
+        </a>
+        <div class="navbar-dropdown">
+            <a class="navbar-item is-selected">
+                Jobs
+            </a>
+            <a class="navbar-item">
+                Contact
+            </a>
         </div>
-        <div class="input-group">
-            <label for="mmr">MMR:</label>
-            <input type="number" id="mmr" name="mmr" inputmode="numeric" required><br><br>
+    </div>
+    <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+            Rankings
+        </a>
+        <div class="navbar-dropdown">
+            <a class="navbar-item is-selected">
+                Jobs
+            </a>
+            <a class="navbar-item">
+                Contact
+            </a>
         </div>
-        <div class="input-group">
-            <button type="submit" id="submit">Submit</button>
+    </div>
+    <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+            Rankings
+        </a>
+        <div class="navbar-dropdown">
+            <a class="navbar-item is-selected">
+                Jobs
+            </a>
+            <a class="navbar-item">
+                Contact
+            </a>
         </div>
-    </form>
-    <table class="sortable styled-table">
-        <thead>
-        <tr>
-            <th class="sorttable_numeric">ID</th>
-            <th>Name</th>
-            <th class="sorttable_numeric">Age</th>
-            <th class="sorttable_numeric">MMR</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody id="table-body" hx-get="/player" hx-trigger="load">
-        </tbody>
-    </table>
+    </div>
+</nav>
+<form id="player-input-form"
+      class="for"
+      hx-post="/player"
+      hx-trigger="submit"
+      hx-target="#table-body"
+      hx-swap="beforeend"
+      hx-ext="json-enc">
+    <div class="control">
+        <label class="label" for="name">Name:</label>
+        <input class="input" type="text" id="name" name="name" required><br><br>
+    </div>
+    <div class="control">
+        <label class="label" for="age">Age:</label>
+        <input class="input" type="number" id="age" name="age" inputmode="numeric" required><br><br>
+    </div>
+    <div class="control">
+        <label class="label" for="mmr">MMR:</label>
+        <input class="input" type="number" id="mmr" name="mmr" inputmode="numeric" required><br><br>
+    </div>
+    <div class="control">
+        <button class="button is-primary is-outlined" type="submit" id="submit">Submit</button>
+    </div>
+</form>
+<table class="table is-fullwidth">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>MMR</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody id="table-body" hx-get="/player" hx-trigger="load">
+    </tbody>
+</table>
 </div>
 </body>
 </html>
