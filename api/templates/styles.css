@@ -48,20 +48,24 @@ h2 {
     margin: 0 0 20px;
 }
 
-form {
+.player-input-form {
+    border-spacing: 0;
+    display: grid;
+    grid-template-columns: auto 1fr; /* Adjust to your needs */
+    gap: 1px 10px; /* Optional: Adjust the gap between rows and columns */
     position: relative;
+    flex-direction: column;
+    justify-content: flex-start;
     left: 5%;
     border-radius: 5px;
     font-size: 12px;
     font-weight: normal;
-    background-color: var(--nord7);
+    background-color: var(--nord5);
     width: 90%;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
+    margin: 0;
     overflow: hidden;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-    padding: 7px 0 7px 1px;
+    border-collapse: collapse;
+    box-shadow: 0 0 2px var(--nord3);
     box-sizing: border-box;
 }
 
@@ -76,14 +80,12 @@ form {
     border-collapse: collapse;
     width: 90%;
     max-width: 100%;
-    white-space: nowrap;
+    box-shadow: 0 0 2px var(--nord3);
     background-color: var(--nord4);
-    margin: 25px 0;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
 .styled-table thead tr {
-    background-color: var(--nord7);
+    background-color: var(--nord5);
     color: var(--nord0);
     text-align: left;
 }
@@ -111,14 +113,21 @@ form {
 }
 
 label {
-    padding-left: 5px;
-    padding-right: 5px;
+    align-items: center;
+    margin-top: 15px;
+    margin-left: 15px;
+    padding: 7px 0 7px 1px;
     font-weight: bold;
+    grid-column: 1; /* Make labels occupy the first column */
+    justify-self: start; /* Align labels to the start of the column */
 }
 
 input {
-    width: 25%;
-    box-sizing: border-box;
+    grid-column: 2; /* Make inputs occupy the second column */
+    padding: 10px; /* Optional: Add padding for better appearance */
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
+    width: 200px; /* Optional: Set a width for inputs */
+    margin-top: 10px;
 }
 
 button {
@@ -126,9 +135,13 @@ button {
     color: var(--nord6);
     border: none;
     padding: 10px 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 200px;
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
+    grid-column: 2; /* Make labels occupy the first column */
     transition: background-color 0.3s ease;
 }
 
@@ -144,17 +157,18 @@ button:disabled {
 }
 
 .link-bar {
+    display: flex;
+    justify-content: space-between;
     position: relative;
     left: 5%;
     border-radius: 5px;
     font-size: 12px;
     font-weight: normal;
-    background-color: var(--nord7);
+    background-color: var(--nord5);
     width: 90%;
-    display: flex;
     align-items: center;
     flex-direction: row;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0 2px var(--nord3);
     padding: 7px 0 7px 1px;
     box-sizing: border-box;
     z-index: 1;
@@ -170,9 +184,10 @@ button:disabled {
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
+    background-color: var(--nord5);
+    border: var(--nord2);
     min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 16px 0 var(--nord4);
     padding: 12px 16px;
     z-index: auto;
 }
@@ -180,4 +195,18 @@ button:disabled {
 
 .dropdown:hover .dropdown-content {
     display: block;
+}
+
+.input-group {
+    display: contents; /* Use contents to avoid creating extra grid items */
+    left: 5%;
+    font-size: 12px;
+    font-weight: normal;
+    background-color: var(--nord5);
+    width: 90%;
+    align-items: center;
+    margin: 0;
+    overflow: hidden;
+    padding: 7px 0 7px 10px;
+    box-sizing: border-box;
 }
