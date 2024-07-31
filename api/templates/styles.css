@@ -2,42 +2,124 @@
 @import "https://unpkg.com/open-props/normalize.min.css";
 @import "https://unpkg.com/open-props/buttons.min.css";
 
+html {
+    font-family: "Roboto Light", Arial, sans-serif;
+}
+
 header {
+    margin-top: 50px;
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
     flex-direction: column;
-    color: var(--gray-4);
-    background-image: var(--white-1);
-    padding: var(--size-fluid-2);
-    border-bottom: 4px solid var(--gray-3);
-    margin-bottom: var(--size-fluid-3);
+    overflow: hidden;
 }
 
-header h1 {
+.title {
+    font-size: var(--size-px-9);
     font-family: "Marcellus SC", Arial, sans-serif;
+    letter-spacing: 50px;
     margin-left: 20px;
 }
 
-header nav {
+.subtitle {
+    margin-left: 25%;
+}
+
+.navbar {
     display: flex;
+    background-color: var(--gray-8);
     justify-content: space-between;
-    position: relative;
-    border-radius: 5px;
-    font-size: 12px;
-    font-weight: normal;
-    width: 100%;
-    align-items: center;
-    flex-direction: row;
-    padding: 7px 0 7px 1px;
+    margin-top: 20px;
     box-sizing: border-box;
+    width: 100%;
+}
+
+.dropdown {
+    float: left;
+    overflow: hidden;
+}
+
+.dropdown .dropbtn {
+    font-size: 16px;
+    border-radius: 0;
+    border: none;
+    outline: none;
+    color: white;
+    background-color: inherit;
+    font-family: inherit; /* Important for vertical align on mobile phones */
+    margin: 0; /* Important for vertical align on mobile phones */
+}
+
+.navbar a:hover, .dropdown:hover .dropbtn {
+    background-color: var(--gray-8);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--gray-7);
+    min-width: 200px;
     z-index: 1;
 }
 
-header nav ul li {
-    display: inline-block;
-    margin-left: var(--size-4);
+.dropdown-content a {
+    float: none;
+    color: var(--gray-1);
+    padding: 12px 16px;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: var(--gray-4);
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.player-form {
+    display: grid;
+    grid-template-columns: auto 1fr; /* Adjust to your needs */
+    gap: 10px 20px; /* Optional: Adjust the gap between rows and columns */
+    flex-direction: column;
+    justify-content: flex-start;
+    font-weight: normal;
+    overflow: hidden;
+    border-collapse: collapse;
+}
+
+.player-form label {
+    align-items: center;
+    border-style: solid;
+    border-color: antiquewhite;
+    margin-left: 30px;
+    font-weight: bold;
+    grid-column: 1; /* Make labels occupy the first column */
+    justify-self: start; /* Align labels to the start of the column */
+}
+
+.player-form input {
+    grid-column: 2; /* Make inputs occupy the second column */
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
+    width: 200px; /* Optional: Set a width for inputs */
+}
+
+.player-form button {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    grid-column: 2;
+    width: 200px;
 }
 
 .table {
     width: 100%;
+    border-radius: 0;
+}
+
+.table button {
+    animation: var(--animation-scale-down) reverse, var(--animation-fade-out) reverse;
+    animation-timing-function: var(--ease-squish-5);
+    animation-duration: 1s;
 }
