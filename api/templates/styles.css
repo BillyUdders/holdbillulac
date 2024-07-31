@@ -1,9 +1,43 @@
-:root {
-    font-family: "Roboto", "Oxygen", "Ubuntu", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+@import "https://unpkg.com/open-props";
+@import "https://unpkg.com/open-props/normalize.min.css";
+@import "https://unpkg.com/open-props/buttons.min.css";
+
+header {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    color: var(--gray-4);
+    background-image: var(--white-1);
+    padding: var(--size-fluid-2);
+    border-bottom: 4px solid var(--gray-3);
+    margin-bottom: var(--size-fluid-3);
 }
-.title {
-    font-family: 'Marcellus SC', Arial, sans-serif;
-    letter-spacing: 50px;
-    font-size: 64px;
-    padding-left: 60px;
+
+header h1 {
+    font-family: "Marcellus SC", Arial, sans-serif;
+    margin-left: 20px;
+}
+
+header nav {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: normal;
+    width: 100%;
+    align-items: center;
+    flex-direction: row;
+    padding: 7px 0 7px 1px;
+    box-sizing: border-box;
+    z-index: 1;
+}
+
+header nav ul li {
+    display: inline-block;
+    margin-left: var(--size-4);
+}
+
+.table {
+    width: 100%;
 }

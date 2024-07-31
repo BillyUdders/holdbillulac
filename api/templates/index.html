@@ -8,10 +8,9 @@
             integrity="sha384-QWGpdj554B4ETpJJC9z+ZHJcA/i59TyjxEPXiiUgN2WmTyV5OEZWCD6gQhgkdpB/"
             crossorigin="anonymous"></script>
     <script src="https://unpkg.com/htmx-ext-json-enc@2.0.0/json-enc.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.1/css/bulma.min.css">
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const form = document.getElementById("myForm");
+            const form = document.getElementById("player-input-form");
             const submitButton = document.getElementById("submit");
 
             function checkFormValidity() {
@@ -22,83 +21,57 @@
             checkFormValidity();
         });
     </script>
-    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Marcellus+SC">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 
 <body>
-<div>
-    <h1 class="title has-text-centered">{{.Description}}</h1>
-    <h2 class="subtitle has-text-centered">{{.Tagline}}</h2>
-</div>
-<nav class="navbar grid" role="navigation" aria-label="main navigation">
-    <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link">
-            Rankings
-        </a>
-        <div class="navbar-dropdown">
-            <a class="navbar-item is-selected">
-                Jobs
-            </a>
-            <a class="navbar-item">
-                Contact
-            </a>
-        </div>
+<header>
+    <div>
+        <h1>{{.Description}}</h1>
+        <div>{{.Tagline}}</div>
     </div>
-    <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link">
-            Teams
-        </a>
-        <div class="navbar-dropdown">
-            <a class="navbar-item is-selected">
-                Jobs
-            </a>
-            <a class="navbar-item">
-                Contact
-            </a>
+    <nav role="navigation" aria-label="main navigation">
+        <div>
+            <a>Rankings</a>
+            <div>
+                <a>Jobs</a>
+                <a>Contact</a>
+            </div>
         </div>
-    </div>
-    <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link">
-            Rankings
-        </a>
-        <div class="navbar-dropdown">
-            <a class="navbar-item is-selected">
-                Jobs
-            </a>
-            <a class="navbar-item">
-                Contact
-            </a>
+        <div>
+            <a>Rankings</a>
+            <div>
+                <a>Jobs</a>
+                <a>Contact</a>
+            </div>
         </div>
-    </div>
-    <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link">
-            Rankings
-        </a>
-        <div class="navbar-dropdown">
-            <a class="navbar-item is-selected">
-                Jobs
-            </a>
-            <a class="navbar-item">
-                Contact
-            </a>
+        <div>
+            <a>Rankings</a>
+            <div>
+                <a>Jobs</a>
+                <a>Contact</a>
+            </div>
         </div>
-    </div>
-    <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link">
-            Rankings
-        </a>
-        <div class="navbar-dropdown">
-            <a class="navbar-item is-selected">
-                Jobs
-            </a>
-            <a class="navbar-item">
-                Contact
-            </a>
+        <div>
+            <a>Rankings</a>
+            <div>
+                <a>Jobs</a>
+                <a>Contact</a>
+            </div>
         </div>
-    </div>
-</nav>
+        <div>
+            <a>Rankings</a>
+            <div>
+                <a>Jobs</a>
+                <a>Contact</a>
+            </div>
+        </div>
+    </nav>
+</header>
+
 <form id="player-input-form"
       class="for"
       hx-post="/player"
@@ -122,7 +95,7 @@
         <button class="button is-primary is-outlined" type="submit" id="submit">Submit</button>
     </div>
 </form>
-<table class="table is-fullwidth">
+<table class="table">
     <thead>
     <tr>
         <th>ID</th>
