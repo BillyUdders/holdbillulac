@@ -17,7 +17,7 @@ var (
 
 func Initialize(_db *sqlx.DB, _infoLog *log.Logger, _errLog *log.Logger) *mux.Router {
 	db = _db
-	box = rice.MustFindBox("../templates")
+	box = rice.MustFindBox("../static")
 	infoLog = _infoLog
 	errLog = _errLog
 

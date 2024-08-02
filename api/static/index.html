@@ -42,17 +42,7 @@
         <h1 class="title">{{.Description}}</h1>
         <a class="subtitle">{{.Tagline}}</a>
     </div>
-    <nav class="navbar">
-        <div class="dropdown">
-            <button class="dropbtn">Dropdown
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
-            </div>
-        </div>
+    <nav class="navbar" hx-get="/nav" hx-trigger="load">
         <div class="dropdown">
             <button class="dropbtn">Dropdown 2
                 <i class="fa fa-caret-down"></i>

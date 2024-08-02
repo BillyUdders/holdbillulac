@@ -1,0 +1,19 @@
+package v1
+
+import "strconv"
+import "fmt"
+
+templ playerTr(p Player) {
+    <tr>
+        <td id="id">{ strconv.Itoa(p.ID) }</td>
+        <td id="name">{ p.Name }</td>
+        <td id="age">{ strconv.Itoa(p.Age) }</td>
+        <td id="MMR">{ strconv.Itoa(p.MMR) }</td>
+        <td id="delete-button">
+        <button class="button is-danger is-outlined"
+                hx-delete={ fmt.Sprintf("/player/%d", p.ID) }
+                hx-target="closest tr"
+                hx-swap="outerHTML">Remove</button>
+        </td>
+    </tr>
+}

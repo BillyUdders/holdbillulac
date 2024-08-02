@@ -11,6 +11,7 @@ require (
 )
 
 require (
+	github.com/a-h/templ v0.2.747 // indirect
 	github.com/daaku/go.zipexe v1.0.2 // indirect
 	github.com/mfridman/interpolate v0.0.2 // indirect
 	github.com/sethvargo/go-retry v0.2.4 // indirect

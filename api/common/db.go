@@ -7,7 +7,7 @@ import (
 )
 
 type Base struct {
-	ID int64 `db:"id"`
+	ID int `db:"id"`
 }
 
 func InitDB(dbName string, logger *log.Logger) *sqlx.DB {
@@ -16,7 +16,7 @@ func InitDB(dbName string, logger *log.Logger) *sqlx.DB {
 	return db
 }
 
-func Insert(db *sqlx.DB, query string, insertable any) (int64, error) {
+func Insert(db *sqlx.DB, query string, insertable any) (int, error) {
 	stmt, err := db.PrepareNamed(query)
 	if err != nil {
 		return 0, err
@@ -29,7 +29,7 @@ func Insert(db *sqlx.DB, query string, insertable any) (int64, error) {
 	if err != nil {
 		return 0, err
 	}
-	return insertId, err
+	return int(insertId), err
 }
 
 func Query[T any](db *sqlx.DB, query string, params ...interface{}) (T, error) {

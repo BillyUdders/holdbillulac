@@ -7,6 +7,14 @@ import (
 	"strconv"
 )
 
+type CRUD struct {
+	Insert    string
+	SelectAll string
+	Select    string
+	Delete    string
+	Update    string
+}
+
 func HandleError(l *log.Logger, w http.ResponseWriter, err error, errCode int) {
 	l.Println(err.Error())
 	http.Error(w, err.Error(), errCode)

@@ -1,29 +1,20 @@
 package v1
 
 import (
+	"context"
 	"errors"
 	"github.com/gorilla/mux"
 	"holdbillulac/api/common"
-	"html/template"
 	"net/http"
 )
 
-var (
-	insert     = "INSERT INTO players (name, age, MMR) VALUES (:name, :age, :MMR)"
-	selectAll  = "SELECT * FROM players"
-	selectByID = "SELECT * FROM players WHERE id = ?"
-	deleteByID = "DELETE FROM players WHERE id = ?"
-
-	trTemplate = template.Must(template.New("player-table-row").Parse(`
-		<tr>
-			<td id="id">{{.ID}}</td>
-			<td id="name">{{.Name}}</td>
-			<td id="age">{{.Age}}</td>
-			<td id="MMR">{{.MMR}}</td>
-			<td id="delete-button"><button class="button is-danger is-outlined" hx-delete="/player/{{.ID}}" hx-target="closest tr" hx-swap="outerHTML">Remove</button></td>
-		</tr>
-	`))
-)
+var playerCRUD = common.CRUD{
+	Insert:    "INSERT INTO players (name, age, MMR) VALUES (:name, :age, :MMR)",
+	SelectAll: "SELECT * FROM players",
+	Select:    "SELECT * FROM players WHERE id = ?",
+	Delete:    "DELETE FROM players WHERE id = ?",
+	Update:    "UPDATE",
+}
 
 func getPlayer(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
@@ -31,12 +22,12 @@ func getPlayer(w http.ResponseWriter, r *http.Request) {
 		common.HandleError(errLog, w, errors.New("must supply ID"), http.StatusBadRequest)
 		return
 	}
-	player, err := common.Query[Player](db, selectByID, id)
+	player, err := common.Query[Player](db, playerCRUD.Select, id)
 	if err != nil {
 		common.HandleError(errLog, w, err, http.StatusInternalServerError)
 		return
 	}
-	err = trTemplate.Execute(w, player)
+	err = playerTr(player).Render(context.Background(), w)
 	if err != nil {
 		common.HandleError(errLog, w, err, http.StatusInternalServerError)
 		return
@@ -45,14 +36,14 @@ func getPlayer(w http.ResponseWriter, r *http.Request) {
 }
 
 func getPlayers(w http.ResponseWriter, _ *http.Request) {
-	players, err := common.Query[[]Player](db, selectAll)
+	players, err := common.Query[[]Player](db, playerCRUD.SelectAll)
 	if err != nil {
 		common.HandleError(errLog, w, err, http.StatusInternalServerError)
 		return
 	}
 	for i := range players {
 		player := players[i]
-		err = trTemplate.Execute(w, player)
+		err = playerTr(player).Render(context.Background(), w)
 		if err != nil {
 			common.HandleError(errLog, w, err, http.StatusInternalServerError)
 			return
@@ -67,13 +58,13 @@ func createPlayer(w http.ResponseWriter, r *http.Request) {
 		common.HandleError(errLog, w, err, http.StatusBadRequest)
 		return
 	}
-	insertId, err := common.Insert(db, insert, player)
+	insertId, err := common.Insert(db, playerCRUD.Insert, player)
 	if err != nil {
 		common.HandleError(errLog, w, err, http.StatusInternalServerError)
 		return
 	}
 	player.ID = insertId
-	err = trTemplate.Execute(w, player)
+	err = playerTr(*player).Render(context.Background(), w)
 	if err != nil {
 		common.HandleError(errLog, w, err, http.StatusInternalServerError)
 		return
@@ -83,7 +74,7 @@ func createPlayer(w http.ResponseWriter, r *http.Request) {
 
 func deletePlayer(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
-	_, err := db.Exec(deleteByID, id)
+	_, err := db.Exec(playerCRUD.Delete, id)
 	if err != nil {
 		common.HandleError(errLog, w, err, http.StatusInternalServerError)
 		return
