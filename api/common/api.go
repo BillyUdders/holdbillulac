@@ -14,6 +14,8 @@ type insertable interface {
 	SetId(id int)
 }
 
+type mapper[T any] func(T) templ.Component
+
 type CRUD struct {
 	Insert    string
 	SelectAll string
@@ -22,46 +24,46 @@ type CRUD struct {
 	Update    string
 }
 
-func Get[T insertable](db *sqlx.DB, w http.ResponseWriter, selectQuery string, id string, render func(T) templ.Component) error {
+func Get[T insertable](db *sqlx.DB, w http.ResponseWriter, selectQuery string, id string, tMap mapper[T]) error {
 	player, err := Query[T](db, selectQuery, id)
 	if err != nil {
 		return err
 	}
-	err = StructToHTML[T](w, render, player)
+	err = StructHTMLResponse[T](w, player, tMap)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func GetAll[T insertable](db *sqlx.DB, w http.ResponseWriter, query string, renderer func(T) templ.Component) error {
+func GetAll[T insertable](db *sqlx.DB, w http.ResponseWriter, query string, tMap mapper[T]) error {
 	items, err := Query[[]T](db, query)
 	if err != nil {
 		return err
 	}
-	err = ArrayToHTML[T](w, renderer, items)
+	err = ArrayHTMLResponse[T](w, items, tMap)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func Create[T insertable](db *sqlx.DB, w http.ResponseWriter, query string, item T, renderer func(T) templ.Component) error {
+func Create[T insertable](db *sqlx.DB, w http.ResponseWriter, query string, item T, tMap mapper[T]) error {
 	insertId, err := Insert(db, query, item)
 	if err != nil {
 		return err
 	}
 	item.SetId(insertId)
-	err = StructToHTML[T](w, renderer, item)
+	err = StructHTMLResponse[T](w, item, tMap)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func ArrayToHTML[T any](w http.ResponseWriter, renderer func(T) templ.Component, items []T) error {
+func ArrayHTMLResponse[T any](w http.ResponseWriter, items []T, tMap mapper[T]) error {
 	for i := range items {
-		err := renderer(items[i]).Render(context.Background(), w)
+		err := tMap(items[i]).Render(context.Background(), w)
 		if err != nil {
 			return err
 		}
@@ -69,8 +71,8 @@ func ArrayToHTML[T any](w http.ResponseWriter, renderer func(T) templ.Component,
 	return nil
 }
 
-func StructToHTML[T any](w http.ResponseWriter, renderer func(T) templ.Component, item T) error {
-	err := renderer(item).Render(context.Background(), w)
+func StructHTMLResponse[T any](w http.ResponseWriter, item T, tMap mapper[T]) error {
+	err := tMap(item).Render(context.Background(), w)
 	if err != nil {
 		return err
 	}

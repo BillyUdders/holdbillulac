@@ -38,7 +38,6 @@ templ indexPage(idx IndexPage) {
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Marcellus+SC">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
     </head>
-
     <body>
     <header>
         <div>
@@ -46,44 +45,6 @@ templ indexPage(idx IndexPage) {
             <a class="subtitle">{ idx.Tagline }</a>
         </div>
         <nav class="navbar" hx-get="/nav" hx-trigger="load">
-            <div class="dropdown">
-                <button class="dropbtn">Dropdown 2
-                    <i class="fa fa-caret-down"></i>
-                </button>
-                <div class="dropdown-content">
-                    <a href="#">Link 4</a>
-                    <a href="#">Link 5</a>
-                    <a href="#">Link 6</a>
-                </div>
-            </div>
-            <div class="dropdown">
-                <button class="dropbtn">Dropdown 3
-                    <i class="fa fa-caret-down"></i>
-                </button>
-                <div class="dropdown-content">
-                    <a href="#">Link 4</a>
-                    <a href="#">Link 5</a>
-                    <a href="#">Link 6</a>
-                </div>
-            </div>
-            <div class="dropdown">
-                <button class="dropbtn">Dropdown 4</button>
-                <div class="dropdown-content">
-                    <a href="#">Link 4</a>
-                    <a href="#">Link 5</a>
-                    <a href="#">Link 6</a>
-                </div>
-            </div>
-            <div class="dropdown">
-                <button class="dropbtn">Dropdown 5
-                    <i class="fa fa-caret-down"></i>
-                </button>
-                <div class="dropdown-content">
-                    <a href="#">Link 4</a>
-                    <a href="#">Link 5</a>
-                    <a href="#">Link 6</a>
-                </div>
-            </div>
         </nav>
     </header>
     <form id="player-form"

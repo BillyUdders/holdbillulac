@@ -36,5 +36,9 @@ func Initialize(_db *sqlx.DB, _infoLog *log.Logger, _errLog *log.Logger) *mux.Ro
 	playerRoutes.HandleFunc("/{id}", getPlayer).Methods("GET")
 	playerRoutes.HandleFunc("/{id}", deletePlayer).Methods("DELETE")
 
+	navRoutes := r.PathPrefix("/nav").Subrouter()
+	navRoutes.HandleFunc("", getNavs).Methods("GET")
+	navRoutes.HandleFunc("/{id}", getNav).Methods("GET")
+
 	return r
 }
