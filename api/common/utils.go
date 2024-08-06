@@ -1,18 +1,30 @@
 package common
 
 import (
+	"context"
 	"fmt"
+	"github.com/a-h/templ"
 	"log"
 	"net/http"
 	"strconv"
 )
 
-type CRUD struct {
-	Insert    string
-	SelectAll string
-	Select    string
-	Delete    string
-	Update    string
+func ListToHTML[T any](w http.ResponseWriter, renderer func(T) templ.Component, items []T) error {
+	for i := range items {
+		err := renderer(items[i]).Render(context.Background(), w)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func ToHTML[T any](w http.ResponseWriter, renderer func(T) templ.Component, item T) error {
+	err := renderer(item).Render(context.Background(), w)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func HandleError(l *log.Logger, w http.ResponseWriter, err error, errCode int) {

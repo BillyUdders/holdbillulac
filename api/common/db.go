@@ -10,6 +10,10 @@ type Base struct {
 	ID int `db:"id"`
 }
 
+func (b Base) SetId(id int) {
+	b.ID = id
+}
+
 func InitDB(dbName string, logger *log.Logger) *sqlx.DB {
 	db := sqlx.MustConnect("sqlite3", dbName)
 	logger.Printf("Initialized: %s", dbName)
