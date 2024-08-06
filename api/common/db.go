@@ -1,6 +1,7 @@
 package common
 
 import (
+	"fmt"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 	"log"
@@ -10,8 +11,9 @@ type Base struct {
 	ID int `db:"id"`
 }
 
-func (b Base) SetId(id int) {
+func (b *Base) SetId(id int) {
 	b.ID = id
+	fmt.Println()
 }
 
 func InitDB(dbName string, logger *log.Logger) *sqlx.DB {
