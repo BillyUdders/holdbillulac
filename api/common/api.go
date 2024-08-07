@@ -29,7 +29,7 @@ func Get[T insertable](db *sqlx.DB, w http.ResponseWriter, selectQuery string, i
 	if err != nil {
 		return err
 	}
-	err = StructHTMLResponse[T](w, player, tMap)
+	err = structHTMLResponse[T](w, player, tMap)
 	if err != nil {
 		return err
 	}
@@ -41,7 +41,7 @@ func GetAll[T insertable](db *sqlx.DB, w http.ResponseWriter, query string, tMap
 	if err != nil {
 		return err
 	}
-	err = ArrayHTMLResponse[T](w, items, tMap)
+	err = arrayHTMLResponse[T](w, items, tMap)
 	if err != nil {
 		return err
 	}
@@ -54,25 +54,7 @@ func Create[T insertable](db *sqlx.DB, w http.ResponseWriter, query string, item
 		return err
 	}
 	item.SetId(insertId)
-	err = StructHTMLResponse[T](w, item, tMap)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func ArrayHTMLResponse[T any](w http.ResponseWriter, items []T, tMap mapper[T]) error {
-	for i := range items {
-		err := tMap(items[i]).Render(context.Background(), w)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func StructHTMLResponse[T any](w http.ResponseWriter, item T, tMap mapper[T]) error {
-	err := tMap(item).Render(context.Background(), w)
+	err = structHTMLResponse[T](w, item, tMap)
 	if err != nil {
 		return err
 	}
@@ -94,4 +76,22 @@ func FieldToInt(raw interface{}) (int, error) {
 	} else {
 		return 0, fmt.Errorf("field is not a number or string")
 	}
+}
+
+func arrayHTMLResponse[T any](w http.ResponseWriter, items []T, tMap mapper[T]) error {
+	for i := range items {
+		err := tMap(items[i]).Render(context.Background(), w)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func structHTMLResponse[T any](w http.ResponseWriter, item T, tMap mapper[T]) error {
+	err := tMap(item).Render(context.Background(), w)
+	if err != nil {
+		return err
+	}
+	return nil
 }

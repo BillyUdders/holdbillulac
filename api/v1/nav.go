@@ -9,6 +9,8 @@ import (
 
 type Nav struct {
 	common.Base
+	Name  string
+	Links []string
 }
 
 var navQueries = common.CRUD{
