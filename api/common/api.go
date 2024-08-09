@@ -79,8 +79,8 @@ func FieldToInt(raw interface{}) (int, error) {
 }
 
 func arrayHTMLResponse[T any](w http.ResponseWriter, items []T, tMap mapper[T]) error {
-	for i := range items {
-		err := tMap(items[i]).Render(context.Background(), w)
+	for _, val := range items {
+		err := structHTMLResponse[T](w, val, tMap)
 		if err != nil {
 			return err
 		}
