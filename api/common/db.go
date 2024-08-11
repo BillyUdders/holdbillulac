@@ -29,12 +29,10 @@ func (p *JSONB) Value() (driver.Value, error) {
 func (p *JSONB) Scan(src interface{}) error {
 	source, ok := src.(string)
 	if !ok {
-		fmt.Printf("error type was: %T\n", src)
 		return errors.New("type assertion .([]byte) failed")
 	}
 
-	var i map[string]interface{}
-	err := json.Unmarshal([]byte(source), &i)
+	err := json.Unmarshal([]byte(source), p)
 	if err != nil {
 		return err
 	}

@@ -89,7 +89,12 @@ func arrayHTMLResponse[T any](w http.ResponseWriter, items []T, tMap mapper[T]) 
 }
 
 func structHTMLResponse[T any](w http.ResponseWriter, item T, tMap mapper[T]) error {
-	err := tMap(item).Render(context.Background(), w)
+	//fmt.Printf("\nStruct: %v ", item)
+	err := tMap(item).Render(context.Background(), log.Writer())
+	if err != nil {
+		return err
+	}
+	err = tMap(item).Render(context.Background(), w)
 	if err != nil {
 		return err
 	}
