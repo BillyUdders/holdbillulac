@@ -6,15 +6,15 @@ import (
 	"github.com/pressly/goose/v3"
 	"holdbillulac/api/common"
 	api "holdbillulac/api/v1"
-	"log"
+	"log/slog"
 	"net/http"
+	"os"
 )
 
 //go:embed migrations/*.sql
 var embedMigrations embed.FS
 
-func runGooseMigration(db *sqlx.DB, logger goose.Logger) {
-	goose.SetLogger(logger)
+func runGooseMigration(db *sqlx.DB) {
 	goose.SetBaseFS(embedMigrations)
 	if err := goose.SetDialect("sqlite3"); err != nil {
 		panic(err)
@@ -26,17 +26,17 @@ func runGooseMigration(db *sqlx.DB, logger goose.Logger) {
 
 func main() {
 	addr := "localhost:8080"
-	infoLog := log.New(log.Writer(), "INFO: ", log.Ldate|log.Ltime|log.Lshortfile)
-	errLog := log.New(log.Writer(), "ERROR: ", log.Ldate|log.Ltime|log.Lshortfile)
 
-	db := common.InitDB("holdbillulac.db", infoLog)
-	runGooseMigration(db, infoLog)
+	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
+	slog.SetDefault(logger)
 
-	router := api.Initialize(db, infoLog, errLog)
+	db := common.InitDB("holdbillulac.db")
+	runGooseMigration(db)
+	router := api.Initialize(db)
 
-	infoLog.Printf("Listening on: %s", addr)
+	logger.Info("Listening:", "address", addr)
 	err := http.ListenAndServe(addr, router)
 	if err != nil {
-		errLog.Fatal(err)
+		logger.Error("", err)
 	}
 }

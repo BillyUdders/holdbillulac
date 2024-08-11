@@ -4,22 +4,17 @@ import (
 	rice "github.com/GeertJohan/go.rice"
 	"github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"
-	"log"
 	"net/http"
 )
 
 var (
-	db      *sqlx.DB
-	box     *rice.Box
-	infoLog *log.Logger
-	errLog  *log.Logger
+	db  *sqlx.DB
+	box *rice.Box
 )
 
-func Initialize(_db *sqlx.DB, _infoLog *log.Logger, _errLog *log.Logger) *mux.Router {
+func Initialize(_db *sqlx.DB) *mux.Router {
 	db = _db
 	box = rice.MustFindBox("../static")
-	infoLog = _infoLog
-	errLog = _errLog
 
 	r := mux.NewRouter()
 

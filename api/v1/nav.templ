@@ -1,13 +1,12 @@
 package v1
 
-// import "fmt"
 
 templ navDiv(n *Nav) {
     <div class="dropdown">
         <button class="dropbtn">{ n.Name }</button>
         <div class="dropdown-content">
-            for key, _ := range n.Data {
-                <a>{ key }</a>
+            for key, val := range n.Data {
+                <a href={ templ.URL(val.(string)) }>{ key }</a>
             }
         </div>
     </div>

@@ -24,12 +24,12 @@ var navQueries = common.CRUD{
 func getNav(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 	if id == "" {
-		common.HandleError(errLog, w, errors.New("must supply ID"), http.StatusBadRequest)
+		common.HandleError(w, errors.New("must supply ID"), http.StatusBadRequest)
 		return
 	}
 	err := common.Get[*Nav](db, w, navQueries.Select, id, navDiv)
 	if err != nil {
-		common.HandleError(errLog, w, err, http.StatusInternalServerError)
+		common.HandleError(w, err, http.StatusInternalServerError)
 		return
 	}
 }
@@ -37,7 +37,7 @@ func getNav(w http.ResponseWriter, r *http.Request) {
 func getNavs(w http.ResponseWriter, _ *http.Request) {
 	err := common.GetAll[*Nav](db, w, navQueries.SelectAll, navDiv)
 	if err != nil {
-		common.HandleError(errLog, w, err, http.StatusInternalServerError)
+		common.HandleError(w, err, http.StatusInternalServerError)
 		return
 	}
 }

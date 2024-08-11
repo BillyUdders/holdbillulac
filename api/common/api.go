@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/a-h/templ"
 	"github.com/jmoiron/sqlx"
-	"log"
+	"log/slog"
 	"net/http"
 	"strconv"
 )
@@ -29,7 +29,6 @@ func Get[T insertable](db *sqlx.DB, w http.ResponseWriter, selectQuery string, i
 	if err != nil {
 		return err
 	}
-
 	if err = structHTMLResponse[T](w, item, tMap); err != nil {
 		return err
 	}
@@ -59,8 +58,8 @@ func Create[T insertable](db *sqlx.DB, w http.ResponseWriter, query string, item
 	return nil
 }
 
-func HandleError(l *log.Logger, w http.ResponseWriter, err error, errCode int) {
-	l.Println(err.Error())
+func HandleError(w http.ResponseWriter, err error, errCode int) {
+	slog.Error(err.Error())
 	http.Error(w, err.Error(), errCode)
 }
 

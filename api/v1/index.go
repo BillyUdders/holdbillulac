@@ -19,9 +19,8 @@ var idx = IndexPage{
 }
 
 func index(w http.ResponseWriter, _ *http.Request) {
-	err := indexPage(idx).Render(context.Background(), w)
-	if err != nil {
-		common.HandleError(errLog, w, err, http.StatusInternalServerError)
+	if err := indexPage(idx).Render(context.Background(), w); err != nil {
+		common.HandleError(w, err, http.StatusInternalServerError)
 		return
 	}
 }
