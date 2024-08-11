@@ -1,6 +1,9 @@
 package common
 
 import (
+	"database/sql/driver"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
@@ -14,6 +17,29 @@ type Base struct {
 func (b *Base) SetId(id int) {
 	b.ID = id
 	fmt.Println()
+}
+
+type JSONB map[string]interface{}
+
+func (p *JSONB) Value() (driver.Value, error) {
+	j, err := json.Marshal(p)
+	return j, err
+}
+
+func (p *JSONB) Scan(src interface{}) error {
+	source, ok := src.(string)
+	if !ok {
+		fmt.Printf("error type was: %T\n", src)
+		return errors.New("type assertion .([]byte) failed")
+	}
+
+	var i map[string]interface{}
+	err := json.Unmarshal([]byte(source), &i)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func InitDB(dbName string, logger *log.Logger) *sqlx.DB {

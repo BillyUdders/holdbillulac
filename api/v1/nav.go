@@ -9,13 +9,13 @@ import (
 
 type Nav struct {
 	common.Base
-	Name  string
-	Links []string
+	Name string       `db:"name"`
+	Data common.JSONB `db:"nav_data"`
 }
 
 var navQueries = common.CRUD{
-	SelectAll: "SELECT * FROM navs",
-	Select:    "SELECT * FROM navs WHERE id = ?",
+	SelectAll: "SELECT * FROM nav",
+	Select:    "SELECT * FROM nav WHERE id = ?",
 	Insert:    "<NOT IMPLEMENTED>",
 	Delete:    "<NOT IMPLEMENTED>",
 	Update:    "<NOT IMPLEMENTED>",

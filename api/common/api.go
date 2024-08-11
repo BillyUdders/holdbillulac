@@ -25,11 +25,11 @@ type CRUD struct {
 }
 
 func Get[T insertable](db *sqlx.DB, w http.ResponseWriter, selectQuery string, id string, tMap mapper[T]) error {
-	player, err := Query[T](db, selectQuery, id)
+	item, err := Query[T](db, selectQuery, id)
 	if err != nil {
 		return err
 	}
-	err = structHTMLResponse[T](w, player, tMap)
+	err = structHTMLResponse[T](w, item, tMap)
 	if err != nil {
 		return err
 	}

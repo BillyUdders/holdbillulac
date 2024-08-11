@@ -46,7 +46,7 @@ func indexPage(idx IndexPage) templ.Component {
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(idx.Description)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/v1/index.templ`, Line: 45, Col: 47}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/v1/index.templ`, Line: 44, Col: 47}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -59,13 +59,13 @@ func indexPage(idx IndexPage) templ.Component {
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(idx.Tagline)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/v1/index.templ`, Line: 46, Col: 45}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/v1/index.templ`, Line: 45, Col: 45}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</a></div><nav class=\"navbar\" hx-get=\"/nav\" hx-trigger=\"load\"><div class=\"dropdown\"><button class=\"dropbtn\">Dropdown 2 <i class=\"fa fa-caret-down\"></i></button><div class=\"dropdown-content\"><a href=\"#\">Link 4</a> <a href=\"#\">Link 5</a> <a href=\"#\">Link 6</a></div></div><div class=\"dropdown\"><button class=\"dropbtn\">Dropdown 3 <i class=\"fa fa-caret-down\"></i></button><div class=\"dropdown-content\"><a href=\"#\">Link 4</a> <a href=\"#\">Link 5</a> <a href=\"#\">Link 6</a></div></div><div class=\"dropdown\"><button class=\"dropbtn\">Dropdown 4</button><div class=\"dropdown-content\"><a href=\"#\">Link 4</a> <a href=\"#\">Link 5</a> <a href=\"#\">Link 6</a></div></div><div class=\"dropdown\"><button class=\"dropbtn\">Dropdown 5 <i class=\"fa fa-caret-down\"></i></button><div class=\"dropdown-content\"><a href=\"#\">Link 4</a> <a href=\"#\">Link 5</a> <a href=\"#\">Link 6</a></div></div></nav></header><form id=\"player-form\" class=\"player-form\" hx-post=\"/player\" hx-trigger=\"submit\" hx-target=\"#table-body\" hx-swap=\"beforeend\" hx-ext=\"json-enc\"><label for=\"name\">Name:</label> <input type=\"text\" id=\"name\" name=\"name\" required><br><br><label for=\"age\">Age:</label> <input type=\"number\" id=\"age\" name=\"age\" inputmode=\"numeric\" required><br><br><label for=\"mmr\">MMR:</label> <input type=\"number\" id=\"mmr\" name=\"mmr\" inputmode=\"numeric\" required><br><br><button type=\"submit\" id=\"submit\">Submit</button></form><table class=\"table\"><thead><tr><th>ID</th><th>Name</th><th>Age</th><th>MMR</th><th>Actions</th></tr></thead> <tbody id=\"table-body\" hx-get=\"/player\" hx-trigger=\"load\"></tbody></table></body></html>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</a></div><nav class=\"navbar\" hx-get=\"/nav\" hx-trigger=\"load\"></nav></header><form id=\"player-form\" class=\"player-form\" hx-post=\"/player\" hx-trigger=\"submit\" hx-target=\"#table-body\" hx-swap=\"beforeend\" hx-ext=\"json-enc\"><label for=\"name\">Name:</label> <input type=\"text\" id=\"name\" name=\"name\" required><br><br><label for=\"age\">Age:</label> <input type=\"number\" id=\"age\" name=\"age\" inputmode=\"numeric\" required><br><br><label for=\"mmr\">MMR:</label> <input type=\"number\" id=\"mmr\" name=\"mmr\" inputmode=\"numeric\" required><br><br><button type=\"submit\" id=\"submit\">Submit</button></form><table class=\"table\"><thead><tr><th>ID</th><th>Name</th><th>Age</th><th>MMR</th><th>Actions</th></tr></thead> <tbody id=\"table-body\" hx-get=\"/player\" hx-trigger=\"load\"></tbody></table></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

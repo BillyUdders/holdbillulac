@@ -49,10 +49,10 @@ func (player *Player) UnmarshalJSON(data []byte) error {
 
 // API Queries
 var playerQueries = common.CRUD{
-	Insert:    "INSERT INTO players (name, age, MMR) VALUES (:name, :age, :MMR)",
-	SelectAll: "SELECT * FROM players",
-	Select:    "SELECT * FROM players WHERE id = ?",
-	Delete:    "DELETE FROM players WHERE id = ?",
+	Insert:    "INSERT INTO player (name, age, MMR) VALUES (:name, :age, :MMR)",
+	SelectAll: "SELECT * FROM player",
+	Select:    "SELECT * FROM player WHERE id = ?",
+	Delete:    "DELETE FROM player WHERE id = ?",
 	Update:    "<NOT IMPLEMENTED>",
 }
 

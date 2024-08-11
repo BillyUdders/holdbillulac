@@ -1,7 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
 
-CREATE TABLE IF NOT EXISTS players
+CREATE TABLE IF NOT EXISTS player
 (
     id   integer primary key,
     name text    not null,
@@ -12,6 +12,5 @@ CREATE TABLE IF NOT EXISTS players
 
 -- +goose Down
 -- +goose StatementBegin
-
-DROP TABLE players
+DROP TABLE player;
 -- +goose StatementEnd
