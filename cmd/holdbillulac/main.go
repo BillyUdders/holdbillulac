@@ -17,7 +17,8 @@ var embedMigrations embed.FS
 func defaultLoggingConfig() {
 	logLevel := &slog.LevelVar{}
 	logLevel.Set(slog.LevelInfo)
-	logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: logLevel}))
+	opts := &slog.HandlerOptions{Level: logLevel}
+	logger := slog.New(slog.NewTextHandler(os.Stdout, opts))
 	slog.SetDefault(logger)
 }
 
