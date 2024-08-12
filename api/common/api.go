@@ -1,12 +1,14 @@
 package common
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"github.com/a-h/templ"
 	"github.com/jmoiron/sqlx"
 	"log/slog"
 	"net/http"
+	"reflect"
 	"strconv"
 )
 
@@ -76,17 +78,43 @@ func FieldToInt(raw interface{}) (int, error) {
 }
 
 func arrayHTMLResponse[T any](w http.ResponseWriter, items []T, tMap mapper[T]) error {
-	for _, val := range items {
+	var count = 0
+	for i, val := range items {
 		if err := structHTMLResponse[T](w, val, tMap); err != nil {
 			return err
 		}
+		count = i
 	}
+	slog.Info("Array Render", "type", reflect.TypeOf(items[0]), "count", count)
 	return nil
 }
 
 func structHTMLResponse[T any](w http.ResponseWriter, item T, tMap mapper[T]) error {
-	if err := tMap(item).Render(context.Background(), w); err != nil {
+	ctx := context.Background()
+	component := tMap(item)
+	if err := structLog(ctx, component, item); err != nil {
 		return err
+	}
+	if err := component.Render(ctx, w); err != nil {
+		return err
+	}
+	return nil
+}
+
+func structLog(ctx context.Context, component templ.Component, item interface{}) error {
+	if slog.Default().Handler().Enabled(ctx, slog.LevelDebug) {
+		var buff bytes.Buffer
+		err := component.Render(ctx, &buff)
+		if err != nil {
+			return err
+		}
+		slog.Debug(
+			"Render",
+			"type", fmt.Sprintf("%T", item),
+			"item", item,
+			"rendered_html", buff.String(),
+		)
+		return nil
 	}
 	return nil
 }

@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
-	"log/slog"
 )
 
 type Base struct {
@@ -28,7 +27,7 @@ func (p *JSONB) Value() (driver.Value, error) {
 func (p *JSONB) Scan(src interface{}) error {
 	source, ok := src.(string)
 	if !ok {
-		return errors.New("type assertion .([]byte) failed")
+		return errors.New("type assertion .(string) failed")
 	}
 	if err := json.Unmarshal([]byte(source), p); err != nil {
 		return err
@@ -37,9 +36,7 @@ func (p *JSONB) Scan(src interface{}) error {
 }
 
 func InitDB(dbName string) *sqlx.DB {
-	db := sqlx.MustConnect("sqlite3", dbName)
-	slog.Info("Initialized:", "db_name", dbName)
-	return db
+	return sqlx.MustConnect("sqlite3", dbName)
 }
 
 func Insert(db *sqlx.DB, query string, insertable any) (int, error) {
