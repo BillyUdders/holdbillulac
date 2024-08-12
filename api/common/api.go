@@ -4,10 +4,12 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"github.com/a-h/htmlformat"
 	"github.com/a-h/templ"
 	"github.com/jmoiron/sqlx"
 	"log/slog"
 	"net/http"
+	"os"
 	"reflect"
 	"strconv"
 )
@@ -92,8 +94,10 @@ func arrayHTMLResponse[T any](w http.ResponseWriter, items []T, tMap mapper[T]) 
 func structHTMLResponse[T any](w http.ResponseWriter, item T, tMap mapper[T]) error {
 	ctx := context.Background()
 	component := tMap(item)
-	if err := structLog(ctx, component, item); err != nil {
-		return err
+	if slog.Default().Handler().Enabled(ctx, slog.LevelDebug) {
+		if err := structLog(ctx, component, item); err != nil {
+			return err
+		}
 	}
 	if err := component.Render(ctx, w); err != nil {
 		return err
@@ -102,19 +106,19 @@ func structHTMLResponse[T any](w http.ResponseWriter, item T, tMap mapper[T]) er
 }
 
 func structLog(ctx context.Context, component templ.Component, item interface{}) error {
-	if slog.Default().Handler().Enabled(ctx, slog.LevelDebug) {
-		var buff bytes.Buffer
-		err := component.Render(ctx, &buff)
-		if err != nil {
-			return err
-		}
-		slog.Debug(
-			"Render",
-			"type", fmt.Sprintf("%T", item),
-			"item", item,
-			"rendered_html", buff.String(),
-		)
-		return nil
+	var buff bytes.Buffer
+	err := component.Render(ctx, &buff)
+	if err != nil {
+		return err
 	}
+	slog.Debug(
+		"Render",
+		"type", fmt.Sprintf("%T", item),
+		"item", item,
+	)
+	if err = htmlformat.Fragment(os.Stdout, &buff); err != nil {
+		slog.Error("failed to format: %v", err)
+	}
+	fmt.Println()
 	return nil
 }
