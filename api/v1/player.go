@@ -6,7 +6,6 @@ import (
 	"github.com/gorilla/mux"
 	"holdbillulac/api/common"
 	"io"
-	"log/slog"
 	"net/http"
 )
 
@@ -94,10 +93,9 @@ func createPlayer(w http.ResponseWriter, r *http.Request) {
 
 func deletePlayer(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
-	_, err := db.Exec(playerQueries.Delete, id)
+	err := common.Delete(db, playerQueries.Delete, id)
 	if err != nil {
 		common.HandleError(w, err, http.StatusInternalServerError)
 		return
 	}
-	slog.Info("Deleted:", "id", id)
 }

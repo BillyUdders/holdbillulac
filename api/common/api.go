@@ -34,6 +34,7 @@ func Get[T insertable](db *sqlx.DB, w http.ResponseWriter, selectQuery string, i
 	if err = structHTMLResponse[T](w, item, tMap); err != nil {
 		return err
 	}
+	slog.Info("Get", "type", reflect.TypeOf(item), "id", id)
 	return nil
 }
 
@@ -45,6 +46,7 @@ func GetAll[T insertable](db *sqlx.DB, w http.ResponseWriter, query string, tMap
 	if err = arrayHTMLResponse[T](w, items, tMap); err != nil {
 		return err
 	}
+	slog.Info("GetAll", "type", reflect.TypeOf(items[0]), "count", len(items))
 	return nil
 }
 
@@ -57,6 +59,7 @@ func Create[T insertable](db *sqlx.DB, w http.ResponseWriter, query string, item
 	if err = structHTMLResponse[T](w, item, tMap); err != nil {
 		return err
 	}
+	slog.Info("Create", "type", reflect.TypeOf(item), "id", insertId)
 	return nil
 }
 
@@ -78,14 +81,11 @@ func FieldToInt(raw interface{}) (int, error) {
 }
 
 func arrayHTMLResponse[T any](w http.ResponseWriter, items []T, tMap mapper[T]) error {
-	var count = 0
-	for i, val := range items {
+	for _, val := range items {
 		if err := structHTMLResponse[T](w, val, tMap); err != nil {
 			return err
 		}
-		count = i
 	}
-	slog.Info("Array Render", "type", reflect.TypeOf(items[0]), "count", count)
 	return nil
 }
 

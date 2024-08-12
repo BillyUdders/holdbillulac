@@ -14,7 +14,7 @@ import (
 //go:embed migrations/*.sql
 var embedMigrations embed.FS
 
-func defaultLoggingConfig() {
+func configSlog() {
 	logLevel := &slog.LevelVar{}
 	logLevel.Set(slog.LevelInfo)
 	opts := &slog.HandlerOptions{Level: logLevel}
@@ -33,17 +33,17 @@ func runGooseMigration(db *sqlx.DB) {
 }
 
 func main() {
-	defaultLoggingConfig()
+	configSlog()
+
 	addr := ":8080"
 	dbName := "holdbillulac.db"
 
 	db := common.InitDB(dbName)
 	runGooseMigration(db)
 	router := api.Initialize(db)
-
 	slog.Info("Initialized", "address", addr, "dbName", dbName)
 	err := http.ListenAndServe(addr, router)
 	if err != nil {
-		slog.Error("Server error", err)
+		panic(err)
 	}
 }

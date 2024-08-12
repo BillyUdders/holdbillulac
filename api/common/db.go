@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
+	"log/slog"
 )
 
 type Base struct {
@@ -59,4 +60,10 @@ func Query[T any](db *sqlx.DB, query string, params ...interface{}) (T, error) {
 	var all T
 	err := db.Select(&all, query, params...)
 	return all, err
+}
+
+func Delete(db *sqlx.DB, query string, params ...interface{}) error {
+	_, err := db.Exec(query, params...)
+	slog.Info("Delete", "query", query, "params", params)
+	return err
 }
