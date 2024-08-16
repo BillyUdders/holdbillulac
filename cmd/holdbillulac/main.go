@@ -16,7 +16,13 @@ var embedMigrations embed.FS
 
 func configSlog() {
 	logLevel := &slog.LevelVar{}
-	logLevel.Set(slog.LevelDebug)
+	if ll := os.Getenv("LOG_LEVEL"); ll != "" {
+		if ll == "INFO" {
+			logLevel.Set(slog.LevelInfo)
+		} else if ll == "DEBUG" {
+			logLevel.Set(slog.LevelDebug)
+		}
+	}
 	opts := &slog.HandlerOptions{Level: logLevel}
 	logger := slog.New(slog.NewTextHandler(os.Stdout, opts))
 	slog.SetDefault(logger)

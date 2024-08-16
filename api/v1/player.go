@@ -18,8 +18,7 @@ type Player struct {
 }
 
 func (player *Player) fromBody(body io.ReadCloser) (*Player, error) {
-	err := json.NewDecoder(body).Decode(&player)
-	if err != nil {
+	if err := json.NewDecoder(body).Decode(&player); err != nil {
 		return nil, err
 	}
 	if player.Name == "" || player.Age == 0 {
