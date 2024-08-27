@@ -3,7 +3,7 @@ package v1
 import "strconv"
 import "fmt"
 
-templ playerTr(p *Player) {
+templ playerTr(p Player) {
     <tr>
         <td id="id">{ strconv.Itoa(p.ID) }</td>
         <td id="name">{ p.Name }</td>

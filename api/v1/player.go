@@ -17,14 +17,14 @@ type Player struct {
 	MMR  int    `db:"MMR"`
 }
 
-func (player *Player) fromBody(body io.ReadCloser) (*Player, error) {
+func (player *Player) fromBody(body io.ReadCloser) (Player, error) {
 	if err := json.NewDecoder(body).Decode(&player); err != nil {
-		return nil, err
+		return Player{}, err
 	}
 	if player.Name == "" || player.Age == 0 {
-		return nil, errors.New("missing required fields")
+		return Player{}, errors.New("missing required fields")
 	}
-	return player, nil
+	return *player, nil
 }
 
 func (player *Player) UnmarshalJSON(data []byte) error {
@@ -62,7 +62,7 @@ func getPlayer(w http.ResponseWriter, r *http.Request) {
 		common.HandleError(w, errors.New("must supply ID"), http.StatusBadRequest)
 		return
 	}
-	err := common.Get[*Player](db, w, playerQueries.Select, id, playerTr)
+	err := common.Get[Player](db, w, playerQueries.Select, id, playerTr)
 	if err != nil {
 		common.HandleError(w, err, http.StatusInternalServerError)
 		return
@@ -70,7 +70,7 @@ func getPlayer(w http.ResponseWriter, r *http.Request) {
 }
 
 func getPlayers(w http.ResponseWriter, _ *http.Request) {
-	err := common.GetAll[*Player](db, w, playerQueries.SelectAll, playerTr)
+	err := common.GetAll[Player](db, w, playerQueries.SelectAll, playerTr)
 	if err != nil {
 		common.HandleError(w, err, http.StatusInternalServerError)
 		return
@@ -83,7 +83,7 @@ func createPlayer(w http.ResponseWriter, r *http.Request) {
 		common.HandleError(w, err, http.StatusBadRequest)
 		return
 	}
-	err = common.Create[*Player](db, w, playerQueries.Insert, player, playerTr)
+	err = common.Create[Player](db, w, playerQueries.Insert, player, playerTr)
 	if err != nil {
 		common.HandleError(w, err, http.StatusInternalServerError)
 		return

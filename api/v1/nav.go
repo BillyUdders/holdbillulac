@@ -27,7 +27,7 @@ func getNav(w http.ResponseWriter, r *http.Request) {
 		common.HandleError(w, errors.New("must supply ID"), http.StatusBadRequest)
 		return
 	}
-	err := common.Get[*Nav](db, w, navQueries.Select, id, navDiv)
+	err := common.Get[Nav](db, w, navQueries.Select, id, navDiv)
 	if err != nil {
 		common.HandleError(w, err, http.StatusInternalServerError)
 		return
@@ -35,7 +35,7 @@ func getNav(w http.ResponseWriter, r *http.Request) {
 }
 
 func getNavs(w http.ResponseWriter, _ *http.Request) {
-	err := common.GetAll[*Nav](db, w, navQueries.SelectAll, navDiv)
+	err := common.GetAll[Nav](db, w, navQueries.SelectAll, navDiv)
 	if err != nil {
 		common.HandleError(w, err, http.StatusInternalServerError)
 		return

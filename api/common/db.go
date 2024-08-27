@@ -14,7 +14,7 @@ type Base struct {
 	ID int `db:"id"`
 }
 
-func (b *Base) SetId(id int) {
+func (b Base) SetId(id int) {
 	b.ID = id
 	fmt.Println()
 }
