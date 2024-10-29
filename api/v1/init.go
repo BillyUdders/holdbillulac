@@ -21,7 +21,7 @@ func Initialize(_db *sqlx.DB) *mux.Router {
 	// Serve static files from the /static/ directory.
 	cssFileServer := http.StripPrefix("/static/", http.FileServer(box.HTTPBox()))
 	r.PathPrefix("/static/").Handler(cssFileServer)
-
+	
 	// Serve index template
 	r.HandleFunc("/", index).Methods("GET")
 
