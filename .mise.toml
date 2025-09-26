@@ -1,0 +1,5 @@
+[env]
+LOG_LEVEL = "INFO"
+
+[tools]
+go = '1.23.0'
